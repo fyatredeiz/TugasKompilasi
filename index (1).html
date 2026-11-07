@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bahasa Kita Menjadi Bahasa Mesin | Tugas Individu - Kompilasi - Raffy Andreano Pratama</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#14203a;--mut:#5b6785;--line:#dde3f0;--acc:#0a7d5a;--acc2:#e8f6f1;--bad:#c62828;--code:#0e1626;--codeink:#7CFFB2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1020;--card:#141b30;--ink:#e6ebf7;--mut:#9aa6c4;--line:#27314e;--acc:#3ddc97;--acc2:#12302a;--bad:#ff7a7a;--code:#070b16;--codeink:#7CFFB2}}
+:root[data-theme="dark"]{--bg:#0b1020;--card:#141b30;--ink:#e6ebf7;--mut:#9aa6c4;--line:#27314e;--acc:#3ddc97;--acc2:#12302a;--bad:#ff7a7a;--code:#070b16;--codeink:#7CFFB2}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 40px}
+header{background:linear-gradient(135deg,#0a7d5a,#1b4fd8);color:#fff;border-radius:16px;padding:22px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+header h1{margin:0 0 4px;font-size:1.5rem}header p{margin:0;opacity:.9}
+.me{font-size:.9rem;text-align:right}.me b{font-size:1rem}
+button{font:inherit;cursor:pointer}
+.theme{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:8px;padding:4px 10px;margin-top:6px}
+.grid{display:grid;grid-template-columns:230px 1fr;gap:16px;margin-top:16px}
+@media(max-width:780px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}
+h2{margin:0 0 10px;font-size:1rem;display:flex;align-items:center;gap:8px}
+h2 i{font-style:normal;background:var(--acc);color:var(--bg);width:22px;height:22px;border-radius:50%;display:inline-grid;place-items:center;font-size:.8rem}
+.ops button{display:block;width:100%;text-align:left;margin:0 0 6px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.ops button:hover{border-color:var(--acc);background:var(--acc2)}
+textarea{width:100%;min-height:110px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);color:var(--ink);font:14px ui-monospace,Menlo,Consolas,monospace}
+#out{background:var(--code);color:var(--codeink);min-height:110px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 12px;border-radius:8px}
+.btn:hover{border-color:var(--acc)}.btn.p{background:var(--acc);color:var(--bg);border-color:var(--acc);font-weight:600}
+.meta{color:var(--mut);font-size:.85rem}
+#rec{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:38px}
+.chip{background:var(--acc2);border:1px solid var(--acc);border-radius:999px;padding:4px 6px 4px 12px;display:inline-flex;gap:6px;align-items:center}
+.chip button{border:0;background:transparent;color:var(--bad);font-weight:700;padding:0 6px}
+.arrow{color:var(--mut)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.tw{overflow-x:auto;max-height:420px;overflow-y:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{padding:6px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{position:sticky;top:0;background:var(--card)}td.m{font-family:ui-monospace,Menlo,Consolas,monospace}
+tr.bad td{color:var(--bad)}
+footer{margin-top:20px;text-align:center;color:var(--mut);font-size:.82rem}
+</style></head><body><div class="wrap">
+<header><div><h1>Mesin Bahasa // Bahasa Kita Menjadi Bahasa Mesin</h1>
+<p>Tulis teks, susun operasi, baca hasil mesinnya. Karya mandiri, tanpa server.</p></div>
+<div class="me"><b>Raffy Andreano Pratama</b><br>NIM 242502040030 - Kelas 3TI01<br>Tugas Individu - Kompilasi<br><button class="theme" id="th">Ganti tema</button></div></header>
+<div class="grid">
+<aside class="card"><h2>Operasi</h2><div class="ops" id="ops"></div></aside>
+<main class="stack">
+<section class="card"><h2><i>1</i>Input - Bahasa Kita</h2>
+<textarea id="inp" placeholder="Ketik teks di sini…">Halo dunia</textarea>
+<div class="row"><button class="btn" id="e1">Contoh: teks jadi biner</button><button class="btn" id="e2">Contoh: biner jadi teks</button><button class="btn" id="clr">Bersihkan</button></div>
+<div class="meta" id="cnt"></div></section>
+<section class="card"><h2><i>2</i>Recipe - Susunan Operasi</h2><div id="rec"></div>
+<div class="row"><button class="btn" id="rclr">Hapus semua operasi</button></div></section>
+<section class="card"><h2><i>3</i>Output - Bahasa Mesin</h2>
+<textarea id="out" readonly></textarea>
+<div class="row"><button class="btn p" id="cp">Salin hasil</button><button class="btn" id="dl">Unduh hasil (.txt)</button></div>
+<div class="meta" id="ocnt"></div></section>
+<section class="card"><h2><i>4</i>Tabel ASCII - Per Huruf</h2>
+<p class="meta">Setiap huruf punya nomor. Inilah bilangan ASCII: huruf <b>A</b> = desimal <b>65</b> = biner <b>01000001</b> = heksa <b>41</b>. Tabel ini membaca teks di Input huruf per huruf, jadi bisa dicocokkan dengan tabel ASCII di Google. Huruf di luar ASCII standar (misalnya é) ditandai merah dan ditampilkan nomor Unicode-nya.</p>
+<div class="tw"><table><thead><tr><th>#</th><th>Huruf</th><th>Desimal</th><th>Biner (8 bit)</th><th>Heksa</th><th>Keterangan</th></tr></thead><tbody id="tb"></tbody></table></div></section>
+</main></div>
+<footer>Mesin Bahasa - Tugas Individu - Kompilasi - Raffy Andreano Pratama, 3TI01, NIM 242502040030 - Operasi berjalan sepenuhnya di browser.</footer></div>
+<script>
+const $=i=>document.getElementById(i),enc=new TextEncoder(),dec=new TextDecoder();
+const by=s=>[...enc.encode(s)],pad=(n,b,l)=>n.toString(b).padStart(l,"0");
+const nums=(s,re,b)=>new Uint8Array((s.match(re)||[]).map(x=>parseInt(x,b)&255));
+const OPS={
+ t2bin:["Teks → Biner",s=>by(s).map(b=>pad(b,2,8)).join(" ")],
+ bin2t:["Biner → Teks",s=>{const g=s.match(/[01]+/g)||[];const x=g.length===1?(g[0].match(/[01]{1,8}/g)||[]):g;return dec.decode(new Uint8Array(x.map(v=>parseInt(v,2)&255)))}],
+ t2hex:["Teks → Heksa",s=>by(s).map(b=>pad(b,16,2).toUpperCase()).join(" ")],
+ hex2t:["Heksa → Teks",s=>dec.decode(nums(s,/[0-9a-fA-F]{2}/g,16))],
+ t2dec:["Teks → Desimal (ASCII)",s=>by(s).join(" ")],
+ dec2t:["Desimal (ASCII) → Teks",s=>dec.decode(nums(s,/\d+/g,10))],
+ t2oct:["Teks → Oktal",s=>by(s).map(b=>pad(b,8,3)).join(" ")],
+ oct2t:["Oktal → Teks",s=>dec.decode(nums(s,/[0-7]+/g,8))],
+ t2b64:["Teks → Base64",s=>btoa(String.fromCharCode(...by(s)))],
+ b642t:["Base64 → Teks",s=>dec.decode(Uint8Array.from(atob(s.trim()),c=>c.charCodeAt(0)))],
+ rev:["Balik teks",s=>[...s].reverse().join("")],
+ up:["HURUF BESAR",s=>s.toUpperCase()],
+ low:["huruf kecil",s=>s.toLowerCase()]};
+let rec=["t2bin"];
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function run(){
+ const s=$("inp").value;let v=s,err="";
+ for(const k of rec){try{v=OPS[k][1](v)}catch(e){err="Kesalahan pada operasi “"+OPS[k][0]+"”: input tidak valid.";break}}
+ $("out").value=err||v;
+ $("cnt").innerHTML="Masukan: <b>"+[...s].length+" karakter</b> - <b>"+by(s).length+" byte</b>";
+ $("ocnt").textContent="Keluaran: "+$("out").value.length+" karakter";
+ $("rec").innerHTML=rec.length?rec.map((k,i)=>(i?'<span class="arrow">→</span>':"")+'<span class="chip">'+OPS[k][0]+'<button data-i="'+i+'" title="Hapus">✕</button></span>').join(""):'<span class="meta">Belum ada operasi. Klik salah satu operasi di kolom kiri untuk menambahkannya.</span>';
+ const names={9:"Tab",10:"Baris baru (LF)",13:"Enter (CR)",32:"Spasi"};
+ $("tb").innerHTML=[...s].slice(0,300).map((ch,i)=>{
+  const c=ch.codePointAt(0);
+  if(c<128){const k=names[c]||(c<32||c===127?"Karakter kontrol":/[A-Z]/.test(ch)?"Huruf besar":/[a-z]/.test(ch)?"Huruf kecil":/\d/.test(ch)?"Angka":"Simbol");
+   return"<tr><td>"+(i+1)+"</td><td class='m'>"+(c>32&&c<127?esc(ch):"␣")+"</td><td>"+c+"</td><td class='m'>"+pad(c,2,8)+"</td><td class='m'>"+pad(c,16,2).toUpperCase()+"</td><td>"+k+"</td></tr>"}
+  return"<tr class='bad'><td>"+(i+1)+"</td><td class='m'>"+esc(ch)+"</td><td>"+c+"</td><td class='m'>"+by(ch).map(b=>pad(b,2,8)).join(" ")+"</td><td class='m'>"+c.toString(16).toUpperCase()+"</td><td>Di luar ASCII: Unicode U+"+pad(c,16,4).toUpperCase()+"</td></tr>"}).join("");
+}
+$("ops").innerHTML=Object.keys(OPS).map(k=>'<button data-k="'+k+'">'+OPS[k][0]+'</button>').join("");
+$("ops").onclick=e=>{const k=e.target.dataset.k;if(k){rec.push(k);run()}};
+$("rec").onclick=e=>{const i=e.target.dataset.i;if(i!==undefined){rec.splice(+i,1);run()}};
+$("rclr").onclick=()=>{rec=[];run()};
+$("inp").oninput=run;
+$("e1").onclick=()=>{$("inp").value="Halo dunia";rec=["t2bin"];run()};
+$("e2").onclick=()=>{$("inp").value=OPS.t2bin[1]("Halo dunia");rec=["bin2t"];run()};
+$("clr").onclick=()=>{$("inp").value="";run()};
+$("cp").onclick=async()=>{try{await navigator.clipboard.writeText($("out").value)}catch(e){$("out").select();document.execCommand("copy")}$("cp").textContent="Tersalin ✓";setTimeout(()=>$("cp").textContent="Salin hasil",1200)};
+$("dl").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([$("out").value],{type:"text/plain"}));a.download="hasil-bahasa-mesin.txt";a.click()};
+$("th").onclick=()=>{const r=document.documentElement,d=getComputedStyle(r).getPropertyValue("--bg").trim()==="#0b1020";r.dataset.theme=d?"light":"dark"};
+run();
+</script></body></html>
